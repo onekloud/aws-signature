@@ -1,2 +1,2 @@
 # aws-signature
-aws signature interface compatible with secured vault.
+AWS signature interface compatible with secured vault.

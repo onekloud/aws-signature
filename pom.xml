@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.onekloud</groupId>
+	<artifactId>aws-signature</artifactId>
+	<version>1.0.0</version>
+	<url>https://github.com/onekloud/aws-signature</url>
+	<inceptionYear>2016</inceptionYear>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+	</properties>
+
+	<developers>
+		<developer>
+			<name>uriel chemouni</name>
+			<url>https://github.com/onekloud/aws-signature</url>
+			<organizationUrl>https://www.onekloud.com</organizationUrl>
+		</developer>
+	</developers>
+
+	<name>AWS signature</name>
+	<description>AWS interface allowing secured remote signature using a AWS vault</description>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:https://onekloud@github.com/onekloud/aws-signature</connection>
+		<developerConnection>scm:git://github.com/onekloud/aws-signature.git</developerConnection>
+		<url>https://github.com/elastic/elasticsearch</url>
+	</scm>
+	<dependencies>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.10</version>
+		</dependency>
+	</dependencies>
+</project>
