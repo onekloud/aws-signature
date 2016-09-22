@@ -1,11 +1,15 @@
 package com.onekloud.auth;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  * AWS basic helper.
@@ -105,7 +109,7 @@ public class AWSSigneHelper {
 			}
 		}
 	}
-	
+
 	public final static Charset utf8 = Charset.forName("UTF8");
 	private final static ThreadLocal<MessageDigest> SHA256_DIGEST = new LocalMessageDigest("SHA-256");
 
@@ -116,7 +120,7 @@ public class AWSSigneHelper {
 		MessageDigest sha256 = SHA256_DIGEST.get();
 		sha256.reset();
 		byte[] digest = sha256.digest(data);
-		return AWSSigneHelper.encodeHex(digest);
+		return encodeHex(digest);
 	}
 
 	/**
@@ -124,6 +128,34 @@ public class AWSSigneHelper {
 	 */
 	public static String digestSha256(String data) {
 		return digestSha256(data.getBytes(utf8));
+	}
+
+	/**
+	 * get the signature key for the aws request
+	 */
+	public static byte[] getAWS4SignatureKey(String secretKey, String... data) {
+		try {
+			byte[] kSecret = ("AWS4".concat(secretKey)).getBytes("UTF8");
+			for (String X : data) {
+				kSecret = HmacSHA256(X, kSecret);
+			}
+			return kSecret;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static byte[] HmacSHA256(String data, byte[] key) {
+		try {
+			String algorithm = "HmacSHA256";
+			Mac mac = Mac.getInstance(algorithm);
+			mac.init(new SecretKeySpec(key, algorithm));
+			return mac.doFinal(data.getBytes(utf8));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
