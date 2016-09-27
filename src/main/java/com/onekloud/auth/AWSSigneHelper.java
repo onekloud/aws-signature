@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -60,34 +61,21 @@ public class AWSSigneHelper {
 		}
 		return new String(result);
 	}
-
 	/**
 	 * return bytes array for an Hexa string
 	 */
 	public static byte[] decodeHex(String s) {
 		int len = s.length();
 		byte[] data = new byte[len / 2];
-		for (int i = 0, j = 0; i < len; i += 2, j++) {
-			data[j] = ((byte) ((h2i(s.charAt(i)) << 4) + h2i(s.charAt(i + 1))));
+		for (int i = 0; i < len; i += 2) {
+			data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i + 1), 16));
 		}
 		return data;
 	}
 
 	/**
-	 * convert hex to int
-	 */
-	private static int h2i(char c) {
-		if (c <= '9' && c >= '0')
-			return ((int) c) - '0';
-		if (c <= 'a' && c >= 'f')
-			return 10 + ((int) c) - 'a';
-		if (c <= 'A' && c >= 'F')
-			return 10 + ((int) c) - 'A';
-		return 0;
-	}
-
-	/**
-	 * For debug purpose this interface allow to use a fake Date in signature process
+	 * For debug purpose this interface allow to use a fake Date in signature
+	 * process
 	 */
 	private static Date dt = null;
 
