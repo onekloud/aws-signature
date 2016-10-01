@@ -5,7 +5,6 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -120,6 +119,7 @@ public class AWSSigneHelper {
 
 	/**
 	 * get the signature key for the aws request
+	 * @param data: date, region, service, "aws4_request"
 	 */
 	public static byte[] getAWS4SignatureKey(String secretKey, String... data) {
 		try {
