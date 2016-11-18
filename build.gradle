@@ -1,0 +1,82 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+
+apply plugin: 'maven'
+
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+
+    compile 'commons-codec:commons-codec:1.10'
+
+}
+
+// http://stackoverflow.com/questions/33774782/upload-only-war-jar-files-in-gradlerestrict-zip-tar-generation-and-upload
+//[distZip, distTar].each {
+//	task -> configurations.archives.artifacts.removeAll {
+//		it.class.simpleName == "ArchivePublishArtifact" && it.archiveTask == task
+//	}
+//	task.enabled = false
+//}
+
+install {
+    repositories.mavenInstaller {
+        pom.version = version
+        pom.artifactId = artifactId
+        pom.groupId = groupId
+    }
+}
+
+configurations {
+    // This should not exist as it will force SLF4J calls to be delegated to log4j
+    runtime.exclude group: "org.slf4j", module: "slf4j-log4j12"
+    // This should not exist as it will force SLF4J calls to be delegated to jul
+    runtime.exclude group: "org.slf4j", module: "slf4j-jdk14"
+    // Ensure only the slf4j binding for logback is on the classpath
+    runtime.exclude group: "log4j", module: "log4j"
+    // As recommended from the slf4j guide, exclude commons-logging
+    runtime.exclude group: "commons-logging", module: "commons-logging"
+    // allow provided dependences
+    provided
+    compile.extendsFrom provided
+}
+
+
+uploadArchives {
+	repositories {
+		mavenDeployer {
+			repository(url: "${oneNexusUrl}/repository/maven-releases/") {
+				authentication(userName: oneMavenUser, password: oneMavenPassword)
+			}
+			pom.version = version
+			pom.artifactId = artifactId
+			pom.groupId = groupId
+		}
+	}
+}
+
+// gradle -q tasks --all
+// gradle -q dependencies
+task writeNewPom << {
+    pom {
+        project {
+            inceptionYear = '2016'
+            groupId = 'com.onekloud'
+            licenses {
+                license {
+                    name = 'The Apache Software License, Version 2.0'
+                    url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution = 'repo'
+                }
+            }
+        }
+    }.writeTo("pom.xml")
+}
