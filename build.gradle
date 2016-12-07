@@ -73,7 +73,8 @@ uploadArchives {
 
 // gradle -q tasks --all
 // gradle -q dependencies
-task writeNewPom << {
+task writeNewPom {
+  doLast {
     pom {
         project {
             inceptionYear = '2016'
@@ -87,4 +88,5 @@ task writeNewPom << {
             }
         }
     }.writeTo("pom.xml")
+  }
 }
