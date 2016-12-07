@@ -8,6 +8,10 @@ apply plugin: 'eclipse'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+task wrapper(type: Wrapper) {
+   gradleVersion = '3.2.1'
+}
+
 repositories {
     mavenCentral()
     mavenLocal()
