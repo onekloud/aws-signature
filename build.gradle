@@ -54,10 +54,14 @@ configurations {
 }
 
 
+def oneNexusUrl = System.getenv('ONE_NEXUS_URL')
+def oneMavenUser = System.getenv('ONE_MAVEN_USER')
+def oneMavenPassword = System.getenv('ONE_MAVEN_PASSWORD')
+
 uploadArchives {
 	repositories {
 		mavenDeployer {
-			repository(url: "${oneNexusUrl}/repository/maven-releases/") {
+			repository(url: "${oneNexusUrl}/repository/maven-snapshots/") {
 				authentication(userName: oneMavenUser, password: oneMavenPassword)
 			}
 			pom.version = version
