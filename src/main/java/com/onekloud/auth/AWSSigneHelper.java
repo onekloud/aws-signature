@@ -20,6 +20,8 @@ import javax.crypto.spec.SecretKeySpec;
  *
  */
 public class AWSSigneHelper {
+	private final static String HMAC_SHA256_ALGORITHM =  "HmacSHA256";
+
 	/**
 	 * get a SimpleDateFormat for AWS datetime
 	 */
@@ -99,6 +101,7 @@ public class AWSSigneHelper {
 
 	public final static Charset utf8 = Charset.forName("UTF8");
 	private final static ThreadLocal<MessageDigest> SHA256_DIGEST = new LocalMessageDigest("SHA-256");
+	private final static ThreadLocal<MessageDigest> SHA1_DIGEST = new LocalMessageDigest("SHA-1");
 
 	/**
 	 * Return a 64 char long SHA256 String
@@ -111,10 +114,27 @@ public class AWSSigneHelper {
 	}
 
 	/**
+	 * Return a 64 char long SHA1 String
+	 */
+	public static String digestSha1(byte[] data) {
+		MessageDigest sha256 = SHA1_DIGEST.get();
+		sha256.reset();
+		byte[] digest = sha256.digest(data);
+		return encodeHex(digest);
+	}
+
+	/**
 	 * Return a 64 char long SHA256 String
 	 */
 	public static String digestSha256(String data) {
 		return digestSha256(data.getBytes(utf8));
+	}
+
+	/**
+	 * Return a 64 char long SHA1 String
+	 */
+	public static String digestSha1(String data) {
+		return digestSha1(data.getBytes(utf8));
 	}
 
 	/**
@@ -136,7 +156,19 @@ public class AWSSigneHelper {
 
 	public static byte[] HmacSHA256(String data, byte[] key) {
 		try {
-			String algorithm = "HmacSHA256";
+			SecretKeySpec signingKey = new SecretKeySpec(key, HMAC_SHA256_ALGORITHM);
+			Mac mac = Mac.getInstance(HMAC_SHA256_ALGORITHM);
+			mac.init(signingKey);
+			return mac.doFinal(data.getBytes(utf8));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static byte[] HmacSHA1(String data, byte[] key) {
+		try {
+			String algorithm = "HmacSHA1";
 			Mac mac = Mac.getInstance(algorithm);
 			mac.init(new SecretKeySpec(key, algorithm));
 			return mac.doFinal(data.getBytes(utf8));
@@ -145,5 +177,4 @@ public class AWSSigneHelper {
 		}
 		return null;
 	}
-
 }
