@@ -66,7 +66,7 @@ public class AWSSigneHelper {
 	}
 
 	/**
-	 * return bytes array as Hexa string long as 2x bytes array size
+	 * return base64 encoded String
 	 */
 	public static String encodeBase64(byte[] bytes) {
 		return base64.encodeToString(bytes);
