@@ -11,6 +11,8 @@ import java.util.TimeZone;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.apache.commons.codec.binary.Base64;
+
 /**
  * AWS basic helper.
  * 
@@ -20,8 +22,8 @@ import javax.crypto.spec.SecretKeySpec;
  *
  */
 public class AWSSigneHelper {
-	private final static String HMAC_SHA256_ALGORITHM =  "HmacSHA256";
-
+	private final static String HMAC_SHA256_ALGORITHM = "HmacSHA256";
+	private final static Base64 base64 = new Base64(512, new byte[0]);
 	/**
 	 * get a SimpleDateFormat for AWS datetime
 	 */
@@ -62,6 +64,14 @@ public class AWSSigneHelper {
 		}
 		return new String(result);
 	}
+
+	/**
+	 * return bytes array as Hexa string long as 2x bytes array size
+	 */
+	public static String encodeBase64(byte[] bytes) {
+		return base64.encodeToString(bytes);
+	}
+
 	/**
 	 * return bytes array for an Hexa string
 	 */
