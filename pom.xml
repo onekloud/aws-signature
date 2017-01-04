@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.onekloud</groupId>
 	<artifactId>aws-signature</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<url>https://github.com/onekloud/aws-signature</url>
 	<inceptionYear>2016</inceptionYear>
 	<properties>

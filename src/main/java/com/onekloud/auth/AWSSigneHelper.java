@@ -84,6 +84,10 @@ public class AWSSigneHelper {
 		return data;
 	}
 
+	public static byte[] decodeBase64(String s) {
+		return Base64.decodeBase64(s);
+	}
+
 	/**
 	 * For debug purpose this interface allow to use a fake Date in signature
 	 * process
