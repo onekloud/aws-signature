@@ -5,12 +5,14 @@ apply plugin: 'maven'
 
 apply plugin: 'eclipse'
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
-task wrapper(type: Wrapper) {
-   gradleVersion = '3.2.1'
-}
+def oneNexusUrl = System.getenv('ONE_NEXUS_URL')
+def oneMavenUser = System.getenv('ONE_MAVEN_USER')
+def oneMavenPassword = System.getenv('ONE_MAVEN_PASSWORD')
+
+task wrapper(type: Wrapper) { gradleVersion = '3.2.1' }
 
 repositories {
     mavenCentral()
@@ -54,14 +56,11 @@ configurations {
 }
 
 
-def oneNexusUrl = System.getenv('ONE_NEXUS_URL')
-def oneMavenUser = System.getenv('ONE_MAVEN_USER')
-def oneMavenPassword = System.getenv('ONE_MAVEN_PASSWORD')
-
+def repoType = version.contains('SNAPSHOT') ? 'snapshot' : 'releases'
 uploadArchives {
 	repositories {
 		mavenDeployer {
-			repository(url: "${oneNexusUrl}/repository/maven-snapshots/") {
+			repository(url: "${oneNexusUrl}/repository/onekloud-${repoType}/") {
 				authentication(userName: oneMavenUser, password: oneMavenPassword)
 			}
 			pom.version = version
